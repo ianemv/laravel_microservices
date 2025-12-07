@@ -1,0 +1,61 @@
+services:
+  converter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: converter-service
+    restart: unless-stopped
+    environment:
+      - APP_NAME=Converter
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - LOG_CHANNEL=stderr
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+      - VIDEO_QUEUE=video
+      - MP3_QUEUE=mp3
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    networks:
+      - converter-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - converter-network
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - converter-network
+
+networks:
+  converter-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:

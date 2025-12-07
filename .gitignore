@@ -1,0 +1,33 @@
+# Environment files (contain secrets)
+**/.env
+**/.env.local
+**/.env.*.local
+**/.env.backup
+**/.env.production
+
+# Kubernetes secrets (contain sensitive data)
+**/secret.yaml
+**/secret*.yaml
+**/secrets.yaml
+
+# Vendor directories (install via composer)
+**/vendor/
+
+# Node modules
+**/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Laravel specific
+**/storage/logs/*
+!**/storage/logs/.gitkeep
+**/storage/*.key
+**/bootstrap/cache/*.php

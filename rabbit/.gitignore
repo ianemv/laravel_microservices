@@ -1,0 +1,4 @@
+# Kubernetes secrets (contain sensitive data)
+**/secret.yaml
+**/secret*.yaml
+**/secrets.yaml

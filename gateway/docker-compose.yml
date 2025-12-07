@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gateway-service
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - APP_NAME=Gateway
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8080
+      - LOG_CHANNEL=stack
+      - LOG_LEVEL=debug
+      - DB_CONNECTION=mongodb
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DATABASE=mp3converter
+      - AUTH_SVC_ADDRESS=auth:5000
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - microservices
+    volumes:
+      - ./storage:/var/www/html/storage
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - microservices
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  rabbitmq_data:

@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Node
+node_modules
+npm-debug.log
+
+# Laravel
+/vendor
+/storage/*.key
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+
+# Testing
+/tests
+phpunit.xml
+.phpunit.cache
+
+# Documentation
+/docs
+README.md
+CHANGELOG.md
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+
+# Kubernetes
+/manifests
+
+# Misc
+*.md
+*.log

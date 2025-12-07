@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+data:
+  AUTH_SVC_ADDRESS: "auth:5000"
+  RABBITMQ_HOST: "rabbitmq"
+  APP_NAME: "Gateway"
+  APP_ENV: "production"
+  APP_DEBUG: "true"
+  APP_URL: "http://gateway"
+  LOG_CHANNEL: "stderr"
+  LOG_LEVEL: "info"
+  DB_CONNECTION: "mongodb"
+  MONGO_URI: "mongodb://host.minikube.internal:27017"
+  MONGO_DATABASE: "mp3converter"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_USER: "guest"
+  QUEUE_CONNECTION: "sync"
